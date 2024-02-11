@@ -5,7 +5,7 @@ import 'package:audioplayers/audioplayers.dart';
 // Gestionar el estado del timer. En esta clase se encuentra toda la funcionalidad de la aplicación
 class CountDownProvider extends ChangeNotifier {
   // Tiene la capacidad de notificar a los widgets que dependen de su estado cuando ocurren cambios.
-  Duration duration = const Duration(seconds: 10);
+  Duration duration = const Duration(seconds: 3);
   bool isRunning = false;
 
   StreamSubscription<int>? _tickSubscription; //Para pausar el temporalizador
@@ -66,8 +66,11 @@ class CountDownProvider extends ChangeNotifier {
   }
 
   void _playAlarm() async {
-    final player = AudioPlayer();
-    player.play(AssetSource('alarm1.mp3'));
-    
+    try {
+      final player = AudioPlayer();
+      await player.play(AssetSource('jpn.mp3'));
+    } catch (e) {
+      print('Error al reproducir el audio: $e');
+    }
   }
 }
