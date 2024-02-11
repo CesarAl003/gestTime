@@ -17,23 +17,14 @@ class HomePageView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final CountdownProvider = Provider.of<CountDownProvider>(
-        context); // Llamamos a la instancia de nuestra clase para poder llamar metodos y variables
+    final CountdownProvider = Provider.of<CountDownProvider>(context); // Llamamos a la instancia de nuestra clase para poder llamar metodos y variables
 
     return Scaffold(
       // Título de la página
       appBar: AppBar(
         // Linea superior o barra de aplicación
         title: const Text('Cuenta regresiva'),
-        actions: [
-          IconButton(
-              // Botón para reiniciar el timer
-              onPressed: () {
-                // Reiniciar el timer
-                CountdownProvider.setCountDownDuration(Duration(seconds: 60));
-              }, // Icono del botón:
-              icon: const Icon(Icons.restart_alt_outlined))
-        ],
+        
       ),
 
       /// Contador

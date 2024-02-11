@@ -5,16 +5,23 @@ import 'package:audioplayers/audioplayers.dart';
 // Gestionar el estado del timer. En esta clase se encuentra toda la funcionalidad de la aplicación
 class CountDownProvider extends ChangeNotifier {
   // Tiene la capacidad de notificar a los widgets que dependen de su estado cuando ocurren cambios.
-  Duration duration = const Duration(seconds: 3);
+  Duration duration = const Duration(seconds: 0);
   bool isRunning = false;
-
+  final player = AudioPlayer();
   StreamSubscription<int>? _tickSubscription; //Para pausar el temporalizador
+  List<int> pomodoro = [5, 3, 5, 7];
+  var cont = 0;
 
   void startStopTimer() {
     if (!isRunning) {
-      _startTimer(duration.inSeconds); // Llamada a la función
+      // Llamada a la función con el ciclo pomodoro correspondiente
+      
+      if (cont == pomodoro.length) cont = 0;
+      duration = Duration(seconds: pomodoro[cont]);
+      _startTimer(Duration(seconds: pomodoro[cont]).inSeconds);
+      cont++;
     } else {
-      _tickSubscription?.pause();
+      _stopAlarm();
     }
 
     isRunning = !isRunning;
@@ -32,25 +39,27 @@ class CountDownProvider extends ChangeNotifier {
                 seconds -
                 sec -
                 1) // sec es el número de veces que se ha ejecutado la función
-        .take(seconds) // Se va a dener cuando se haya ejecutado 'seconds' veces
+        .take(
+            seconds) // Se va a detener cuando se haya ejecutado 'seconds' veces
         .listen((timeLeftInSeconds) {
       //Aquí se recibe el resultado de la función, es decir 'seconds - sec - 1'
       duration = Duration(seconds: timeLeftInSeconds);
       notifyListeners();
 
       if (timeLeftInSeconds == 0) {
+        _tickSubscription?.pause();
         _playAlarm();
       }
     });
   }
 
-  void setCountDownDuration(Duration newDuration) {
+/*  void setCountDownDuration(Duration newDuration) {
     //Para establecer una nueva duracion
     duration = newDuration;
     _tickSubscription?.cancel();
     isRunning = false;
     notifyListeners();
-  }
+  }*/
 
   String get timeLeftString {
     final minutes = ((duration.inSeconds / 60) % 60)
@@ -67,10 +76,17 @@ class CountDownProvider extends ChangeNotifier {
 
   void _playAlarm() async {
     try {
-      final player = AudioPlayer();
-      await player.play(AssetSource('jpn.mp3'));
+      await player.play(AssetSource('aaa.mp3'));
     } catch (e) {
       print('Error al reproducir el audio: $e');
+    }
+  }
+
+  void _stopAlarm() async {
+    try {
+      await player.stop();
+    } catch (e) {
+      print('Error al detener el audio: $e');
     }
   }
 }
