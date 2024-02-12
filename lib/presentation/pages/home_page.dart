@@ -3,76 +3,89 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class HomePage extends StatelessWidget {
-  // Vista principal
-  const HomePage({Key? key}) : super(key: key); // COnstructor
+  const HomePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return const HomePageView();
+    final countdownProvider = Provider.of<CountDownProvider>(context);
+
+    return HomePageView(countdownProvider: countdownProvider);
   }
 }
 
 class HomePageView extends StatelessWidget {
-  const HomePageView({Key? key}) : super(key: key);
+  final CountDownProvider countdownProvider;
+
+  const HomePageView({Key? key, required this.countdownProvider})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final CountdownProvider = Provider.of<CountDownProvider>(context); // Llamamos a la instancia de nuestra clase para poder llamar metodos y variables
-
     return Scaffold(
-      // Título de la página
       appBar: AppBar(
-        // Linea superior o barra de aplicación
         title: const Text('Cuenta regresiva'),
-        
       ),
-
-      /// Contador
-      body:
-          const _CounterLabel(), // _ indica que _CounterLabel es probablemente una clase privada dentro del mismo archivo
-
-      /// Play - Stop
+      body: _CounterLabel(countdownProvider: countdownProvider),
       floatingActionButton: FloatingActionButton(
-        //botón flotante
         onPressed: () {
-          // Iniciar o detener el temporizador
-          CountdownProvider.startStopTimer();
+          countdownProvider.startStopTimer();
         },
         child: Icon(
-            //Cambiar el icono dependiendo de si el timer esta activo o no
-            CountdownProvider.isRunning
-                ? Icons.pause
-                : Icons.play_arrow_outlined),
+          countdownProvider.isRunning ? Icons.pause : Icons.play_arrow_outlined,
+        ),
       ),
     );
   }
 }
 
 class _CounterLabel extends StatelessWidget {
-  const _CounterLabel({
-    Key? key,
-  }) : super(key: key);
+  final CountDownProvider countdownProvider;
+
+  const _CounterLabel({Key? key, required this.countdownProvider})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    // Puedes acceder a countdownProvider directamente aquí
+    print('Tiempo restante: ${countdownProvider.duration.inSeconds}');
+    print(            countdownProvider.pomodoro[countdownProvider.cont]);
     return SizedBox.expand(
-      // ESte widget ocupa todo el espacio disponible
       child: Row(
-        // Hijo de Size box que es una lista horizontal
-        mainAxisAlignment: MainAxisAlignment.center, //Posición centrada
-        crossAxisAlignment: CrossAxisAlignment.center, // Pocisión centrada
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          //Contenido de la lista horizontal
-          const Icon(Icons.timer_outlined,
-              color: Colors.blue, size: 60), // Un icono de reloj
-          const SizedBox(width: 10), //Espaciado entre cada elemento
-          Text(
-            context.select(
-                (CountDownProvider countdown) => countdown.timeLeftString),
-            style: const TextStyle(fontSize: 50),
+          Stack(
+            alignment: Alignment.center,
+            children: [
+              progressBar(),
+              Text(
+                context.select(
+                  (CountDownProvider countdown) => countdown.timeLeftString,
+                ),
+                style: const TextStyle(fontSize: 50),
+              ),
+            ],
           ),
         ],
       ),
     );
   }
+
+  Widget progressBar() => SizedBox(
+        width: 200,
+        height: 200,
+        child: Stack(
+          fit: StackFit.expand,
+          children: [
+            CircularProgressIndicator(
+              value: 1 -
+                  countdownProvider.duration.inSeconds /
+                      countdownProvider.pomodoro[countdownProvider.cont],
+              valueColor: AlwaysStoppedAnimation(Colors.purple.shade50),
+              strokeWidth: 12,
+              backgroundColor: Color.fromARGB(255, 117, 167, 255),
+            ),
+          ],
+        ),
+      );
 }

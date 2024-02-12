@@ -9,7 +9,7 @@ class CountDownProvider extends ChangeNotifier {
   bool isRunning = false;
   final player = AudioPlayer();
   StreamSubscription<int>? _tickSubscription; //Para pausar el temporalizador
-  List<int> pomodoro = [5, 3, 5, 7];
+  List<int> pomodoro = [15, 10, 15, 20];
   var cont = 0;
 
   void startStopTimer() {
@@ -19,7 +19,7 @@ class CountDownProvider extends ChangeNotifier {
       if (cont == pomodoro.length) cont = 0;
       duration = Duration(seconds: pomodoro[cont]);
       _startTimer(Duration(seconds: pomodoro[cont]).inSeconds);
-      cont++;
+      
     } else {
       _stopAlarm();
     }
@@ -30,25 +30,18 @@ class CountDownProvider extends ChangeNotifier {
 
   // El guion bajo dicta que es privado, es decir, no se puede utilizar fuera de esta clase
   void _startTimer(int seconds) {
-    _tickSubscription
-        ?.cancel(); // Limpiamos la suscripción anterior para optimizar nuestra app
+    _tickSubscription?.cancel(); // Limpiamos la suscripción anterior para optimizar nuestra app
     // Stream es un flujo de datos, este se ejecuta perodicamente, cada un segundo ejecuta la funcion lamda
-    _tickSubscription = Stream<int>.periodic(
-            const Duration(seconds: 1),
-            (sec) =>
-                seconds -
-                sec -
-                1) // sec es el número de veces que se ha ejecutado la función
-        .take(
-            seconds) // Se va a detener cuando se haya ejecutado 'seconds' veces
-        .listen((timeLeftInSeconds) {
-      //Aquí se recibe el resultado de la función, es decir 'seconds - sec - 1'
+    _tickSubscription = Stream<int>.periodic(const Duration(seconds: 1), (sec) => seconds - sec - 1) // sec es el número de veces que se ha ejecutado la función
+        .take(seconds) // Se va a detener cuando se haya ejecutado 'seconds' veces
+        .listen((timeLeftInSeconds) { //Aquí se recibe el resultado de la función, es decir 'seconds - sec - 1'
       duration = Duration(seconds: timeLeftInSeconds);
       notifyListeners();
 
       if (timeLeftInSeconds == 0) {
         _tickSubscription?.pause();
         _playAlarm();
+        cont++;
       }
     });
   }
@@ -61,22 +54,16 @@ class CountDownProvider extends ChangeNotifier {
     notifyListeners();
   }*/
 
-  String get timeLeftString {
-    final minutes = ((duration.inSeconds / 60) % 60)
-        .floor()
-        .toString()
-        .padLeft(2, '0'); //Floor redondea hacia abajo
-    final seconds = (duration.inSeconds % 60)
-        .floor()
-        .toString()
-        .padLeft(2, '0'); //Convierte a Strin y rellena los espacios con ceros
+  String get timeLeftString { // GEter para el tiempo restante
+    final minutes = ((duration.inSeconds / 60) % 60).floor().toString().padLeft(2, '0'); //Floor redondea hacia abajo
+    final seconds = (duration.inSeconds % 60).floor().toString().padLeft(2, '0'); //Convierte a Strin y rellena los espacios con ceros
 
     return '$minutes:$seconds';
   }
 
   void _playAlarm() async {
     try {
-      await player.play(AssetSource('aaa.mp3'));
+      await player.play(AssetSource('sounds/aaa.mp3'));
     } catch (e) {
       print('Error al reproducir el audio: $e');
     }
