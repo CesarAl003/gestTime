@@ -26,14 +26,6 @@ class HomePageView extends StatelessWidget {
         title: const Text('Cuenta regresiva'),
       ),
       body: _CounterLabel(countdownProvider: countdownProvider),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          countdownProvider.startStopTimer();
-        },
-        child: Icon(
-          countdownProvider.isRunning ? Icons.pause : Icons.play_arrow_outlined,
-        ),
-      ),
     );
   }
 }
@@ -56,11 +48,20 @@ class _CounterLabel extends StatelessWidget {
             children: [
               progressBar(),
               Positioned(
-                child: Image.asset(
-                  'assets/img/Logo.png',
-                  width: 190,
-                  height: 190,
+                child: InkResponse(
+                  onTap: () {
+                    if (!countdownProvider.isRunning) {
+                      countdownProvider.startStopTimer();
+                    }
+                  },
+                  highlightColor: Colors.blue,
+                  highlightShape: BoxShape.circle,
+                  child: Image.asset(
+                    'assets/img/Logo.png',
+                    width: 190,
+                    height: 190,
                   ),
+                ),
               ),
             ],
           ),
