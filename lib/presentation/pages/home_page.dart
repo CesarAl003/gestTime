@@ -46,11 +46,8 @@ class _CounterLabel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Puedes acceder a countdownProvider directamente aquí
-    print('Tiempo restante: ${countdownProvider.duration.inSeconds}');
-    print(            countdownProvider.pomodoro[countdownProvider.cont]);
     return SizedBox.expand(
-      child: Row(
+      child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
@@ -58,13 +55,21 @@ class _CounterLabel extends StatelessWidget {
             alignment: Alignment.center,
             children: [
               progressBar(),
-              Text(
-                context.select(
-                  (CountDownProvider countdown) => countdown.timeLeftString,
-                ),
-                style: const TextStyle(fontSize: 50),
+              Positioned(
+                child: Image.asset(
+                  'assets/img/Logo.png',
+                  width: 190,
+                  height: 190,
+                  ),
               ),
             ],
+          ),
+          SizedBox(height: 30),
+          Text(
+            context.select(
+              (CountDownProvider countdown) => countdown.timeLeftString,
+            ),
+            style: const TextStyle(fontSize: 50),
           ),
         ],
       ),
