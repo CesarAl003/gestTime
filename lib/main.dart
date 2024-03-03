@@ -1,4 +1,5 @@
 import 'package:countdown_app/presentation/Provides/Contdown_provider.dart';
+import 'package:countdown_app/presentation/Provides/Navigation_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:countdown_app/presentation/pages/home_page.dart';
 import 'package:provider/provider.dart';
@@ -15,7 +16,9 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         //Creamos una una instancia de mi clase CountDownProvider
-        ChangeNotifierProvider(create: ((_) => CountDownProvider()))
+        ChangeNotifierProvider(create: ((_) => CountDownProvider())),
+        ChangeNotifierProvider(create: ((_) => NavigationBarProvider
+        ()))
       ],
       child: const MaterialApp(
         title: 'Material App', // Nombre de la app

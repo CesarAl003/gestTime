@@ -1,4 +1,8 @@
 import 'package:countdown_app/presentation/Provides/Contdown_provider.dart';
+import 'package:countdown_app/presentation/Provides/Navigation_provider.dart';
+import 'package:countdown_app/presentation/pages/countdown_page.dart';
+import 'package:countdown_app/presentation/pages/login_page.dart';
+import 'package:countdown_app/presentation/pages/login2.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -8,90 +12,72 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final countdownProvider = Provider.of<CountDownProvider>(context);
+    final navigationProvider = Provider.of<NavigationBarProvider>(context);
+    //final _screenindezProvider = Provider.of<NavigationBarProvider>(context);
+    //int currentScreenIndex = _screenindezProvider.fetchCurrentScreenIndex;
 
-    return HomePageView(countdownProvider: countdownProvider);
+    return HomePageView(
+        countdownProvider: countdownProvider, navigationProvider: navigationProvider,);
   }
 }
 
 class HomePageView extends StatelessWidget {
   final CountDownProvider countdownProvider;
+  final NavigationBarProvider navigationProvider;
 
-  const HomePageView({Key? key, required this.countdownProvider})
+  const HomePageView({Key? key, required this.countdownProvider, required this.navigationProvider})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+  List<dynamic> screens = [
+        // Mis pestañas
+        const countDown(),
+        login(),
+        login2(),
+        
+      ];
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Cuenta regresiva'),
+        title: const Text('GesTime'),
       ),
-      body: _CounterLabel(countdownProvider: countdownProvider),
-    );
-  }
-}
-
-class _CounterLabel extends StatelessWidget {
-  final CountDownProvider countdownProvider;
-
-  const _CounterLabel({Key? key, required this.countdownProvider})
-      : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox.expand(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Stack(
-            alignment: Alignment.center,
-            children: [
-              progressBar(),
-              Positioned(
-                child: InkResponse(
-                  onTap: () {
-                    if (!countdownProvider.isRunning) {
-                      countdownProvider.startStopTimer();
-                    }
-                  },
-                  highlightColor: Colors.blue,
-                  highlightShape: BoxShape.circle,
-                  child: Image.asset(
-                    'assets/img/Logo.png',
-                    width: 190,
-                    height: 190,
-                  ),
-                ),
+      bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.shifting,
+        showSelectedLabels: false,
+        elevation: 1.5,
+        currentIndex: navigationProvider.fetchCurrentScreenIndex,
+        onTap: (value) => navigationProvider.updateScreenIndex(value),
+        items: [
+          BottomNavigationBarItem(
+              label: '1',
+              icon: Icon((navigationProvider.fetchCurrentScreenIndex == 0)
+                  ? Icons.home
+                  : Icons.home_outlined),
+              backgroundColor: Colors
+                  .indigo // provide color to any one icon as it will overwrite the whole bottombar's color ( if provided any )
               ),
-            ],
+          BottomNavigationBarItem(
+            label: '2',
+            icon: Icon((navigationProvider.fetchCurrentScreenIndex == 1)
+                ? Icons.search
+                : Icons.search_outlined),
           ),
-          SizedBox(height: 30),
-          Text(
-            context.select(
-              (CountDownProvider countdown) => countdown.timeLeftString,
-            ),
-            style: const TextStyle(fontSize: 50),
+          BottomNavigationBarItem(
+            label: '3',
+            icon: Icon((navigationProvider.fetchCurrentScreenIndex == 2)
+                ? Icons.favorite
+                : Icons.favorite_outline),
+          ),
+          BottomNavigationBarItem(
+            label: '4',
+            icon: Icon((navigationProvider.fetchCurrentScreenIndex == 3)
+                ? Icons.person
+                : Icons.person_outline),
           ),
         ],
       ),
+      body: screens[navigationProvider.fetchCurrentScreenIndex],
     );
   }
-
-  Widget progressBar() => SizedBox(
-        width: 200,
-        height: 200,
-        child: Stack(
-          fit: StackFit.expand,
-          children: [
-            CircularProgressIndicator(
-              value: 1 -
-                  countdownProvider.duration.inSeconds /
-                      countdownProvider.pomodoro[countdownProvider.cont],
-              valueColor: AlwaysStoppedAnimation(Colors.purple.shade50),
-              strokeWidth: 12,
-              backgroundColor: Color.fromARGB(255, 117, 167, 255),
-            ),
-          ],
-        ),
-      );
 }

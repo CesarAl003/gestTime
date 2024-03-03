@@ -9,7 +9,7 @@ class CountDownProvider extends ChangeNotifier {
   bool isRunning = false;
   final player = AudioPlayer();
   StreamSubscription<int>? _tickSubscription; //Para pausar el temporalizador
-  List<int> pomodoro = [5, 3, 7];
+  List<int> pomodoro = [25, 5, 25, 5, 25, 5, 25, 15];
   var cont = 0;
 
   void startStopTimer() {
@@ -79,7 +79,7 @@ class CountDownProvider extends ChangeNotifier {
 
   void _playAlarm() async {
     try {
-      await player.play(AssetSource('sounds/aaa.mp3'));
+      await player.play(AssetSource('sounds/Alarm.mp3'));
     } catch (e) {
       print('Error al reproducir el audio: $e');
     }
