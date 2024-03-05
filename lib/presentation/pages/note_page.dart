@@ -1,24 +1,39 @@
-import 'package:countdown_app/presentation/Provides/Contdown_provider.dart';
+import 'package:flutter/material.dart';
+
+class note extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.indigo,
+        title: const Text(
+          "Screen 4",
+          style: TextStyle(color: Colors.blue),
+        ),
+      ),
+    );
+  }
+}/*import 'package:countdown_app/presentation/Provides/Contdown_provider.dart';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class countDown extends StatelessWidget {
-  const countDown({Key? key}) : super(key: key);
+class note extends StatelessWidget {
+  const note({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final countdownProvider = Provider.of<CountDownProvider>(context);
 
-    return countDownView(
+    return noteView(
         countdownProvider: countdownProvider);
   }
 }
 
-class countDownView extends StatelessWidget {
+class noteView extends StatelessWidget {
   final CountDownProvider countdownProvider;
 
-  const countDownView({Key? key, required this.countdownProvider})
+  const noteView({Key? key, required this.countdownProvider})
       : super(key: key);
 
   @override
@@ -78,20 +93,20 @@ class _CounterLabel extends StatelessWidget {
   }
 
   Widget progressBar() => SizedBox(
-    width: 200,
-    height: 200,
-    child: Stack(
-      fit: StackFit.expand,
-      children: [
-        CircularProgressIndicator(
-          value: 1 -
-              countdownProvider.duration.inSeconds /
-                  countdownProvider.pomodoro[countdownProvider.cont],
-          valueColor: AlwaysStoppedAnimation(Colors.purple.shade50),
-          strokeWidth: 12,
-          backgroundColor: Color.fromARGB(255, 117, 167, 255),
+        width: 200,
+        height: 200,
+        child: Stack(
+          fit: StackFit.expand,
+          children: [
+            CircularProgressIndicator(
+              value: 1 -
+                  countdownProvider.duration.inSeconds /
+                      countdownProvider.pomodoro[countdownProvider.cont],
+              valueColor: AlwaysStoppedAnimation(Colors.purple.shade50),
+              strokeWidth: 12,
+              backgroundColor: Color.fromARGB(255, 117, 167, 255),
+            ),
+          ],
         ),
-      ],
-    ),
-  );
-}
+      );
+}*/

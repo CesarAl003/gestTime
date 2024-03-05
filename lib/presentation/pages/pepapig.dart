@@ -1,56 +1,57 @@
-import 'package:countdown_app/presentation/pages/home_page.dart';
-import 'package:countdown_app/presentation/pages/login_page.dart';
-import 'package:countdown_app/presentation/pages/countdown_page.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:countdown_app/presentation/Provides/Navigation_provider.dart';
 
-class HomeScreen extends StatelessWidget {
-  
-  List<dynamic> screens = [
-    login(),
-    //aaa(),
-  ];
+/// Flutter code sample for [NavigationBar].
+
+void main() => runApp(const NavigationBarApp());
+
+class NavigationBarApp extends StatelessWidget {
+  const NavigationBarApp({super.key});
+
   @override
   Widget build(BuildContext context) {
-    final _screenindexprovider = Provider.of<NavigationBarProvider>(context);
-    int currentScreenIndex = _screenindexprovider.fetchCurrentScreenIndex;
+    return const MaterialApp(home: NavigationExample());
+  }
+}
+
+class NavigationExample extends StatefulWidget {
+  const NavigationExample({super.key});
+
+  @override
+  State<NavigationExample> createState() => _NavigationExampleState();
+}
+
+class _NavigationExampleState extends State<NavigationExample> {
+  int currentPageIndex = 0;
+  NavigationDestinationLabelBehavior labelBehavior =
+      NavigationDestinationLabelBehavior.onlyShowSelected;
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.shifting,
-        showSelectedLabels: false,
-        elevation: 1.5,
-        currentIndex: currentScreenIndex,
-        onTap: (value) => _screenindexprovider.updateScreenIndex(value),
-        items: [
-          BottomNavigationBarItem(
-              label: '',
-              icon: Icon(
-                  (currentScreenIndex == 0) ? Icons.home : Icons.home_outlined),
-              backgroundColor: Colors
-                  .indigo // provide color to any one icon as it will overwrite the whole bottombar's color ( if provided any )
-              ),
-          BottomNavigationBarItem(
-            label: '',
-            icon: Icon((currentScreenIndex == 1)
-                ? Icons.search
-                : Icons.search_outlined),
+      bottomNavigationBar: NavigationBar(
+        labelBehavior: labelBehavior,
+        selectedIndex: currentPageIndex,
+        onDestinationSelected: (int index) {
+          setState(() {
+            currentPageIndex = index;
+          });
+        },
+        destinations: const <Widget>[
+          NavigationDestination(
+            icon: Icon(Icons.explore),
+            label: 'Explore',
           ),
-          BottomNavigationBarItem(
-            label: '',
-            icon: Icon((currentScreenIndex == 2)
-                ? Icons.favorite
-                : Icons.favorite_outline),
+          NavigationDestination(
+            icon: Icon(Icons.commute),
+            label: 'Commute',
           ),
-          BottomNavigationBarItem(
-            label: '',
-            icon: Icon((currentScreenIndex == 3)
-                ? Icons.person
-                : Icons.person_outline),
+          NavigationDestination(
+            selectedIcon: Icon(Icons.bookmark),
+            icon: Icon(Icons.bookmark_border),
+            label: 'Saved',
           ),
         ],
       ),
-      body: screens[currentScreenIndex],
     );
   }
 }
