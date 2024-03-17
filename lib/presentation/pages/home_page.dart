@@ -1,4 +1,4 @@
-import 'package:countdown_app/presentation/Provides/Navigation_provider.dart';
+import 'package:countdown_app/presentation/Providers/Navigation_provider.dart';
 import 'package:countdown_app/presentation/pages/countdown_page.dart';
 import 'package:countdown_app/presentation/pages/login_page.dart';
 import 'package:countdown_app/presentation/pages/login2.dart';
@@ -27,11 +27,11 @@ class HomePageView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
   List<dynamic> screens = [
-        // Mis pestañas
+        // Mis pestañas contenidas en el menu
         countDown(),
         login(),
-        login2(),
-        note(),
+        login2(), // Prueba
+        note(), // Prueba
       ];
 
     return Scaffold(

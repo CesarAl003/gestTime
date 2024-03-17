@@ -1,4 +1,4 @@
-import 'package:countdown_app/presentation/Provides/Contdown_provider.dart';
+import 'package:countdown_app/presentation/Providers/Contdown_provider.dart';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

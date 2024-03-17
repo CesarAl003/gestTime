@@ -1,10 +1,20 @@
-import 'package:countdown_app/presentation/Provides/Contdown_provider.dart';
-import 'package:countdown_app/presentation/Provides/Navigation_provider.dart';
+import 'package:countdown_app/presentation/Providers/Contdown_provider.dart';
+import 'package:countdown_app/presentation/Providers/Navigation_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:countdown_app/presentation/pages/home_page.dart';
 import 'package:provider/provider.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
-void main() => runApp(const MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
+  runApp(const MyApp()); 
+}
 
 // StatelessWidget se utiliza cuando la parte visual del widget no cambia.
 class MyApp extends StatelessWidget {
@@ -17,8 +27,7 @@ class MyApp extends StatelessWidget {
       providers: [
         //Creamos una una instancia de mi clase CountDownProvider
         ChangeNotifierProvider(create: ((_) => CountDownProvider())),
-        ChangeNotifierProvider(create: ((_) => NavigationBarProvider
-        ()))
+        ChangeNotifierProvider(create: ((_) => NavigationBarProvider()))
       ],
       child: const MaterialApp(
         title: 'Material App', // Nombre de la app
