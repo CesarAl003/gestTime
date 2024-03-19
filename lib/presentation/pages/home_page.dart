@@ -1,7 +1,7 @@
 import 'package:countdown_app/presentation/Providers/Navigation_provider.dart';
 import 'package:countdown_app/presentation/pages/countdown_page.dart';
 import 'package:countdown_app/presentation/pages/login_page.dart';
-import 'package:countdown_app/presentation/pages/login2.dart';
+import 'package:countdown_app/presentation/pages/signup_page.dart';
 import 'package:countdown_app/presentation/pages/note_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -29,8 +29,8 @@ class HomePageView extends StatelessWidget {
   List<dynamic> screens = [
         // Mis pestañas contenidas en el menu
         countDown(),
-        login(),
-        login2(), // Prueba
+        Login(),
+        SignUp(), // Prueba
         note(), // Prueba
       ];
 
@@ -45,25 +45,25 @@ class HomePageView extends StatelessWidget {
         onDestinationSelected: (value) => navigationProvider.updateScreenIndex(value),
         destinations: <Widget>[
           NavigationDestination(
-              label: '1',
+              label: '',
               icon: Icon((navigationProvider.fetchCurrentScreenIndex == 0)
-                  ? Icons.home
-                  : Icons.home_outlined),
+                  ? Icons.timer
+                  : Icons.timer_outlined),
               ),
           NavigationDestination(
-            label: '2',
+            label: '',
             icon: Icon((navigationProvider.fetchCurrentScreenIndex == 1)
-                ? Icons.search
-                : Icons.search_outlined),
+                ? Icons.book
+                : Icons.book_outlined),
           ),
           NavigationDestination(
-            label: '3',
+            label: '',
             icon: Icon((navigationProvider.fetchCurrentScreenIndex == 2)
-                ? Icons.favorite
-                : Icons.favorite_outline),
+                ? Icons.calendar_month
+                : Icons.calendar_month_outlined),
           ),
           NavigationDestination(
-            label: '4',
+            label: '',
             icon: Icon((navigationProvider.fetchCurrentScreenIndex == 3)
                 ? Icons.person
                 : Icons.person_outline),

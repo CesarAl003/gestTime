@@ -1,7 +1,9 @@
 import 'package:countdown_app/presentation/Providers/Contdown_provider.dart';
 import 'package:countdown_app/presentation/Providers/Navigation_provider.dart';
+import 'package:countdown_app/presentation/Providers/Login_provider.dart';
+import 'package:countdown_app/presentation/Providers/Signup_provider.dart';
+import 'package:countdown_app/presentation/pages/login_page.dart';
 import 'package:flutter/material.dart';
-import 'package:countdown_app/presentation/pages/home_page.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
@@ -27,12 +29,14 @@ class MyApp extends StatelessWidget {
       providers: [
         //Creamos una una instancia de mi clase CountDownProvider
         ChangeNotifierProvider(create: ((_) => CountDownProvider())),
-        ChangeNotifierProvider(create: ((_) => NavigationBarProvider()))
+        ChangeNotifierProvider(create: ((_) => NavigationBarProvider())),
+        ChangeNotifierProvider(create: ((_) => LoginProvider())),
+        ChangeNotifierProvider(create: ((_) => SignUpProvider()))
       ],
       child: const MaterialApp(
         title: 'Material App', // Nombre de la app
         debugShowCheckedModeBanner: false, // Quitar la marca de debug
-        home: HomePage(), // La vista principal
+        home: Login(), // La vista principal
         // theme: AppTheme().currentTheme,
       ),
     );

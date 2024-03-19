@@ -1,29 +1,28 @@
-import 'package:countdown_app/presentation/Providers/Login_provider.dart';
-import 'package:countdown_app/presentation/pages/signup_page.dart';
+import 'package:countdown_app/presentation/Providers/Signup_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class Login extends StatelessWidget {
-  const Login({super.key});
+class SignUp extends StatelessWidget {
+  const SignUp({super.key});
 
   @override
   Widget build(BuildContext context) {
     // Instancia del provider
-    final loginProvider = Provider.of<LoginProvider>(context);
+    final signUpProvider = Provider.of<SignUpProvider>(context);
 
-    return LoginView(loginProvider: loginProvider);
+    return SignUpView(signUpProvider: signUpProvider);
   }
 }
 
-class LoginView extends StatefulWidget {
-  final LoginProvider loginProvider;
-  const LoginView({Key? key, required this.loginProvider}) : super(key: key);
+class SignUpView extends StatefulWidget {
+  final SignUpProvider signUpProvider;
+  const SignUpView({Key? key, required this.signUpProvider}) : super(key: key);
 
   @override
-  _Login createState() => _Login();
+  _SignUp createState() => _SignUp();
 }
 
-class _Login extends State<LoginView> {
+class _SignUp extends State<SignUpView> {
   //final LoginProvider loginProvider;
   final TextEditingController _txtEmail = TextEditingController();
   final TextEditingController _txtPass = TextEditingController();
@@ -40,7 +39,7 @@ class _Login extends State<LoginView> {
             children: [
               const SizedBox(height: 100.0),
               const Text(
-                'Iniciar sesión',
+                'Registro',
                 style: TextStyle(
                   color: Colors.blue,
                   fontSize: 38,
@@ -86,26 +85,13 @@ class _Login extends State<LoginView> {
                 obscureText: _obscureText,
               ),
               const SizedBox(height: 20.0),
-              TextButton(
-                onPressed: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => const SignUp()));
-                },
-                child: const Text(
-                  '¿Aun no tienes cuenta? Presiona aquí',
-                  style: TextStyle(
-                    fontSize: 16,
-                  ),
-                ),
-              ),
-              const SizedBox(height: 20.0),
               ElevatedButton(
                 // Botón de Aceptar
                 onPressed: () async {
                   // Para acceder a mi mensaje en caso de error
                   print(_txtEmail.text);
                   print(_txtPass.text);
-                  widget.loginProvider
+                  widget.signUpProvider
                       .signIn(context, _txtEmail.text, _txtPass.text);
                   //loginProvider.signIn(context, _txtEmail.text, _txtPass.text);
                 },
